@@ -75,6 +75,7 @@ module.exports.action = async (msg, args) => {
 					}, 5000);
 					return;
 				}
+
 				const color = msgg.content;
 				const configured = new MessageEmbed()
 					.setTitle('Configuration terminée !')

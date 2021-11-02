@@ -66,12 +66,18 @@ module.exports.action = async (msg, args) => {
 						msgg.channel.bulkDelete(number4, true).catch();
 						await collector.stop();
 					}
+					else {
+						msgg.channel.bulkDelete(number1, true).catch();
+						await waiting(1000);
+						msgg.channel.bulkDelete(number2, true).catch();
+						await collector.stop();
+					}
 				}
 				else {
 
-					msgg.channel.bulkDelete(number, true);
+					await msgg.channel.bulkDelete(number, true).catch();
 					await collector.stop();
-					const rep_emb = new MessageEmbed()
+					const rep_emb = await new MessageEmbed()
 						.setTitle(`\`${number - 3}\` messages ont étés supprimés !`)
 						.setColor(colorC);
 					const rep = await msgg.channel.send({ embeds: [rep_emb] });

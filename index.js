@@ -9,6 +9,7 @@ const COLOR = require('./color-embeds.json');
 
 require('dotenv').config();
 
+
 // TODO Changer le TOKEN du bot avant la mise en ligne de la maj.
 client.login(process.env.TEST);
 
@@ -42,6 +43,10 @@ const AVATAR = require('./comms/avatar');
 const CHANNELINFOS = require('./comms/channelinfo');
 const BAN = require('./comms/ban.js');
 const METEO = require('./comms/meteo');
+const PLAY = require('./comms/play');
+
+client.discordTogether;
+
 
 client.on('ready', () => {
 
@@ -218,6 +223,11 @@ client.on('messageCreate', async msg => {
 				return METEO.action(msg, args, client,
 				);
 			}
+
+			if (PLAY.check(args)) {
+				return PLAY.action(msg, args, client,
+				);
+			}
 		}
 	}
 	else if (args[0].startsWith('-')) {
@@ -304,7 +314,7 @@ client.on('interactionCreate', async interaction => {
 				const colorC = COLOR['color-embed'][interaction.guild.id]?.color || '#4ed5f8';
 				const help_embed_2 = new MessageEmbed()
 					.setTitle('💬 Conversation - Commandes de Conversations')
-					.setDescription(`> **clear:** Supprime un nombre de messages compris entre 1 et 198
+					.setDescription(`> **clear:** Supprime un nombre de messages compris entre 1 et 19
 				> **say:** Pour faire parler le bot à votre place.`)
 					.setFooter('Choisissez une catégorie dans le sélecteur ci-dessous pour en consulter les commandes.')
 					.setColor(colorC)
@@ -356,12 +366,99 @@ client.on('interactionCreate', async interaction => {
 					.setFooter('Choisissez une catégorie dans le sélecteur ci-dessous pour en consulter les commandes.')
 					.setColor(colorC)
 			;
+
 				await interaction.deferUpdate();
 				await interaction.editReply({ embeds: [help_embed_2], components:[row] });
 			}
 		}
 	}
 });
+
+
+/* const { DiscordTogether } = require('discord-together');
+client.discordTogether = new DiscordTogether(client);
+
+client.on('messageCreate', async msg => {
+	const colorC = COLOR['color-embed'][msg.guild.id]?.color || '#4ed5f8';
+	if (msg.content === '-play liste') {
+		msg.delete();
+		const embed = new MessageEmbed()
+			.setTitle('Liste des commandes de jeux')
+			.setDescription(`> **play youtube:** Ouvrir Youtube together
+			> **play poker:** Démarer une partie de poker
+			> **play chess:** démarer une partie d'échecs
+			> **play betrayal:** Démarer une partie de Betrayal
+			> play fishing:** Démarer une partie de Fishington`)
+			.addField('Attention', 'Attention, cette activitée est encore en développement du côté de discord. En cas de problème, n\'hésitez pas à venir nous le signaller sur le [serveur support](https://discord.gg/tCmb8yGZYw)')
+			.setColor(colorC);
+		msg.channel.send({ embeds: [embed] });
+	}
+	if (msg.content === '-play youtube') {
+		msg.delete();
+		if (msg.member.voice.channel) {
+			client.discordTogether.createTogetherCode(msg.member.voice.channel.id, 'youtube').then(async invite => {
+				const link = new MessageEmbed()
+					.setTitle('Jouer')
+					.setURL(invite.code)
+					.setColor(colorC);
+				msg.channel.send({ embeds: [link] });
+				return;
+			});
+		}
+	}
+	if (msg.content === '-play poker') {
+		msg.delete();
+		if (msg.member.voice.channel) {
+			client.discordTogether.createTogetherCode(msg.member.voice.channel.id, 'poker').then(async invite => {
+				const link = new MessageEmbed()
+					.setTitle('Jouer')
+					.setURL(invite.code)
+					.setColor(colorC);
+				msg.channel.send({ embeds: [link] });
+				return;
+			});
+		}
+	}
+	if (msg.content === '-play chess') {
+		msg.delete();
+		if (msg.member.voice.channel) {
+			client.discordTogether.createTogetherCode(msg.member.voice.channel.id, 'chess').then(async invite => {
+				const link = new MessageEmbed()
+					.setTitle('Jouer')
+					.setURL(invite.code)
+					.setColor(colorC);
+				msg.channel.send({ embeds: [link] });
+				return;
+			});
+		}
+	}
+	if (msg.content === '-play betrayal') {
+		msg.delete();
+		if (msg.member.voice.channel) {
+			client.discordTogether.createTogetherCode(msg.member.voice.channel.id, 'poker').then(async invite => {
+				const link = new MessageEmbed()
+					.setTitle('Jouer')
+					.setURL(invite.code)
+					.setColor(colorC);
+				msg.channel.send({ embeds: [link] });
+				return;
+			});
+		}
+	}
+	if (msg.content === '-play fishing') {
+		msg.delete();
+		if (msg.member.voice.channel) {
+			client.discordTogether.createTogetherCode(msg.member.voice.channel.id, 'fishing').then(async invite => {
+				const link = new MessageEmbed()
+					.setTitle('Jouer')
+					.setURL(invite.code)
+					.setColor(colorC);
+				msg.channel.send({ embeds: [link] });
+				return;
+			});
+		}
+	}
+});*/
 
 
 // const colorC = COLOR['color-embed'][msg.guild.id]?.color || '#4ed5f8'
