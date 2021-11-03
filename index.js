@@ -11,7 +11,7 @@ require('dotenv').config();
 
 
 // TODO Changer le TOKEN du bot avant la mise en ligne de la maj.
-client.login(process.env.TEST);
+client.login(process.env.BOT);
 
 // -----Import DBs Configs-----
 const PREFIXFILE = require('./prefix.json');
@@ -40,7 +40,6 @@ const SUGGEST = require('./comms/suggest_bot');
 const UNLOCK = require('./comms/Unlock');
 const CLEAR = require('./comms/Clear');
 const AVATAR = require('./comms/avatar');
-const CHANNELINFOS = require('./comms/channelinfo');
 const BAN = require('./comms/ban.js');
 const METEO = require('./comms/meteo');
 const PLAY = require('./comms/play');
@@ -215,10 +214,10 @@ client.on('messageCreate', async msg => {
 				);
 			}
 
-			if (CHANNELINFOS.check(args)) {
+			/* if (CHANNELINFOS.check(args)) {
 				return CHANNELINFOS.action(msg, args, client,
 				);
-			}
+			}*/
 
 			if (METEO.check(args)) {
 				return METEO.action(msg, args, client,
@@ -308,7 +307,8 @@ client.on('interactionCreate', async interaction => {
 					.setTitle('🔨 Modération - Commandes de Modération')
 					.setDescription(`> **kick:** Éxpulse un membre du serveur.
 				> **ban:** Banni un membre du serveur.
-				> **lock:** Vérouille un salon textuel.`)
+				> **lock:** Vérouille un salon textuel.
+				> **staff:** Pour demander de l'aide au staff dirrectement depuis votre serveur (vaut mieux donner un lien d'invitation dans votre requête 😉)`)
 					.setFooter('Choisissez une catégorie dans le sélecteur ci-dessous pour en consulter les commandes.')
 					.setColor(colorC)
 				;
@@ -350,7 +350,8 @@ client.on('interactionCreate', async interaction => {
 				> **host:** Envoit des informations relatives à l'hébergement du bot.
 				> **invite:** Invite le bot sur tonserveur.
 				> **ping:** Donne la latence du bot.
-				> **support:** Lien vers le serveur support.`)
+				> **support:** Lien vers le serveur support.
+				> **avatar:** Donne toutes les informations relatives à un utilisateur.`)
 					.setFooter('Choisissez une catégorie dans le sélecteur ci-dessous pour en consulter les commandes.')
 					.setColor(colorC)
 			;
@@ -368,8 +369,9 @@ client.on('interactionCreate', async interaction => {
 				> **say:** Fais parler le bot.
 				> **ticket:** Ouvre un ticket sur le serveur ( **close**: Pour le fermer).
 				> **suggestion-bot:** Faire une suggestion au bot.
-				> **avatar:** Pour voir différentes informations sur un membre du serveur
-				> **staff:** Pour demander de l'aide au staff dirrectement depuis votre serveur (vaut mieux donner un lien d'invitation dans votre requête 😉)`)
+				> **avatar:** Pour voir différentes informations sur un membre du serveur.
+				> **meteo:** Donne la météo pour un lieux donné.
+				> **staff:** Permet de contacter le staff du bot en cas de problème avec le bot sur votre serveur *( il vaut mieux donner un liens d'invitation vers celui-ci pour plus d'éfficacité )*`)
 					.setFooter('Choisissez une catégorie dans le sélecteur ci-dessous pour en consulter les commandes.')
 					.setColor(colorC)
 			;

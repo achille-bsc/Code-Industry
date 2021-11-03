@@ -21,16 +21,12 @@ module.exports.action = async (msg, args) => {
 		if (!msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return msg.channel.send({ embeds: [nperm] });
 		const colorC = COLOR['color-embed'][msg.guild.id]?.color || '#4ed5f8';
 		msg.delete();
-		console.log('001');
 		const question = new MessageEmbed()
 			.setTitle('Pour quelle raison voullez-vous faire appel au staff du bot ?')
 			.setColor(colorC)
         ;
-		console.log('002');
-		const collector = await new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 60000 });
-		console.log('003');
+		const collector = await new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 90000 });
 		msg.channel.send({ embeds: [question] });
-		console.log('004');
 		collector.on('collect', async msgg => {
 			if (msg.author.id === msgg.author.id) {
 				const raison = msgg.content;
@@ -48,7 +44,7 @@ module.exports.action = async (msg, args) => {
 					.setColor(colorC)
 					.addField('Voullez-vous confirmer l\'envoit de ces infos au staff du bot ?', '`oui` ou `non`')
                 ;
-				const collector2 = await new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 60000 });
+				const collector2 = await new MessageCollector(msg.channel, m => m.author.id === msg.author.id, { time: 90000 });
 				const infos = await msg.channel.send({ embeds: [info] });
 				collector2.on('collect', async msggg => {
 					if (msg.author.id === msggg.author.id) {
@@ -60,7 +56,19 @@ module.exports.action = async (msg, args) => {
 								.setColor(colorC)
                             ;
 							const hook = new WebhookClient({ url: 'https://discord.com/api/webhooks/905450271109427200/JWpwV-B38ZfHSYZiKDQJbzXiwkauobUsLs4tEk8u9tu8OT9I00_3gczA_wrwORfEhsr2' });
-							await hook.send({ embeds: [info] });
+							const serv_info = new MessageEmbed()
+								.setTitle('Informations')
+								.setDescription(`**___Un nouveau serveu à besoin d'aide !___**
+
+								> **Le nom du serveur:** \`${msg.guild.name}\`
+								> **L'identifiant du serveur:** \`${msg.guild.id}\`
+								> **Votre pseudonyme:** \`${msg.author.username}\`
+								> **Votre tag:** \`${msg.author.tag}\`
+								> **Votre identifiant:** \`${msg.author.id}\`
+								> **La raison de votre demande d'aide:** \`${raison}\``)
+								.setColor('#4ed5f8')
+							;
+							await hook.send({ embeds: [serv_info] });
 							await msggg.channel.send({ embeds: [yes] });
 						}
 						else if (msggg.content === 'non') {
