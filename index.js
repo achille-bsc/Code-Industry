@@ -44,6 +44,7 @@ const CHANNELINFOS = require('./comms/channelinfo');
 const BAN = require('./comms/ban.js');
 const METEO = require('./comms/meteo');
 const PLAY = require('./comms/play');
+const STAFF = require('./comms/staff');
 
 client.discordTogether;
 
@@ -228,6 +229,11 @@ client.on('messageCreate', async msg => {
 				return PLAY.action(msg, args, client,
 				);
 			}
+
+			if (STAFF.check(args)) {
+				return STAFF.action(msg, args, client,
+				);
+			}
 		}
 	}
 	else if (args[0].startsWith('-')) {
@@ -362,7 +368,8 @@ client.on('interactionCreate', async interaction => {
 				> **say:** Fais parler le bot.
 				> **ticket:** Ouvre un ticket sur le serveur ( **close**: Pour le fermer).
 				> **suggestion-bot:** Faire une suggestion au bot.
-				> **avatar:** Pour voir différentes informations sur un membre du serveur`)
+				> **avatar:** Pour voir différentes informations sur un membre du serveur
+				> **staff:** Pour demander de l'aide au staff dirrectement depuis votre serveur (vaut mieux donner un lien d'invitation dans votre requête 😉)`)
 					.setFooter('Choisissez une catégorie dans le sélecteur ci-dessous pour en consulter les commandes.')
 					.setColor(colorC)
 			;

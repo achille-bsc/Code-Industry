@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 const commandeFormat = 'lock';
 const ALIAS = ['verouiller', 'vérouiller'];
 const fs = require('fs');
@@ -17,6 +17,11 @@ module.exports.check = (args) => {
 module.exports.action = async (msg, args) => {
 	if (commandeFormat.split(' ').length <= args.length) {
 		// executer le code
+		const nperm = new MessageEmbed()
+			.setTitle('Erreur')
+			.setColor('RED')
+			.setDescription('Vous n\'avez pas la permission d\'utiliser cette commande.');
+		if (!msg.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return msg.channel.send({ embeds: [nperm] });
 		msg.delete();
 		const everlock = new MessageEmbed()
 			.setTitle('Erreur !')
