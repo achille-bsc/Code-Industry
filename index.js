@@ -44,6 +44,7 @@ const BAN = require('./comms/ban.js');
 const METEO = require('./comms/meteo');
 const PLAY = require('./comms/play');
 const STAFF = require('./comms/staff');
+const MEMBERCOUNT = require('./comms/membercount');
 
 client.discordTogether;
 
@@ -66,7 +67,7 @@ client.on('ready', () => {
 		'-help',
 		'derière toi',
 		'-support',
-		'la version V.1.0.4',
+		'la version V.1.0.5',
 		'Karma Akabane#6802',
 	];
 	setInterval(() => {
@@ -74,26 +75,14 @@ client.on('ready', () => {
 		i = ++i % statuses.length;
 	}, 7500);
 	// TODO Règler le bug de ce système ou le désactiver pour la prochaine maj
-	/* setInterval(function() {
-		console.log('001');
-		client.guilds.cache.map(guildss => {
-			console.log('002');
-			const guild = client.guilds.cache.get(guildss.id);
-			const userCount = guild.memberCount;
-			const db_count = require('./membercount.json');
-			if (db_count?.[guildss.id]) {
-				console.log('003');
-				const idd = db_count.servers[guildss.id].salon[];
-				const memberCountChannel = guild.channels.cache.get(idd);
-				if (memberCountChannel.type === 'GUILD_TEXT') {
-					memberCountChannel.setName(`${userCount} membres `);
-				}
-			}
-			else {
-				return;
-			}
+	setInterval(function() {
+		let serv = 0;
+		client.guilds.cache.map(() => {
+			serv = serv + 1;
 		});
-	}, 5000);*/
+		const memberCountChannel = client.guilds.cache.get('854029220346855435').channels.cache.get('905521931732807701');
+		memberCountChannel.setName(`${serv} serveurs `);
+	}, 5000);
 });
 
 client.on('messageCreate', async msg => {
@@ -231,6 +220,11 @@ client.on('messageCreate', async msg => {
 
 			if (STAFF.check(args)) {
 				return STAFF.action(msg, args, client,
+				);
+			}
+
+			if (MEMBERCOUNT.check(args)) {
+				return MEMBERCOUNT.action(msg, args, client,
 				);
 			}
 		}
