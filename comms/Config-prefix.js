@@ -63,9 +63,9 @@ module.exports.action = async (msg, args) => {
 					.setColor(colorC);
 				if (cont.length > 3) {
 					msgg.delete();
-					msgg.channel.send({ embeds: [format] });
+					const error_lenght = msgg.channel.send({ embeds: [format] });
 					setTimeout(() => {
-						msgg.channel.bulkDelete(1);
+						error_lenght.delete();
 					}, 5000);
 					return;
 				}

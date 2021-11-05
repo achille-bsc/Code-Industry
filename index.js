@@ -11,7 +11,7 @@ require('dotenv').config();
 
 
 // TODO Changer le TOKEN du bot avant la mise en ligne de la maj.
-client.login(process.env.BOT);
+client.login(process.env.TEST);
 
 // -----Import DBs Configs-----
 const PREFIXFILE = require('./prefix.json');
@@ -45,6 +45,8 @@ const METEO = require('./comms/meteo');
 const PLAY = require('./comms/play');
 const STAFF = require('./comms/staff');
 const MEMBERCOUNT = require('./comms/membercount');
+const CONFIGMETEO = require('./comms/Config-météo');
+// const CONFIGMETEO = require('./comms/Config-météo');
 
 client.discordTogether;
 
@@ -90,15 +92,16 @@ client.on('messageCreate', async msg => {
 	if (msg.bot) return;
 	if (msg.guild) {
 		const colorC = COLOR['color-embed'][msg.guild.id]?.color || '#4ed5f8';
-		if (msg.content.includes('prefix')) {
+		const content = msg.content;
+		if (content === ('prefix')) {
 			const prefix_embed = new MessageEmbed()
 				.setTitle('<a:online:903897219600638002> Code Industry est opérationnel !')
 				.setDescription(`Le préfixe utilisé sur le serveur est ${PREFIXFILE.prefix[msg.guild.id]?.prefix || '-'}.
-				Pour exécuter une commande, vous pouvez faire \`${PREFIXFILE.prefix[msg.guild.id]?.prefix || '-'}commande\` ou @Code Industry#8245 commande
+				Pour exécuter une commande, vous pouvez faire \`${PREFIXFILE.prefix[msg.guild.id]?.prefix || '-'}[commande]\`
 				
-				Pour modifier ce préfixe, utilisez la commande \`${PREFIXFILE.prefix[msg.guild.id]?.prefix || '-'}prefix\` ou @Code Industry#8245 prefix
+				Pour modifier ce préfix, utilisez la commande \`${PREFIXFILE.prefix[msg.guild.id]?.prefix || '-'}[prefix]\`
 				Rendez-vous sur le [support](https://discord.gg/yG3PuG8qXe) pour plus d'aide ou d'informations.`)
-				.setFooter(`${msg.guild.name}`)
+				.setFooter(`${msg.guild.name}・`)
 				.setColor(colorC)
 			;
 			await msg.delete().catch();
@@ -109,8 +112,8 @@ client.on('messageCreate', async msg => {
 		// Commands sans prefix
 
 		// Commands avec prefix
-		if (args[0].startsWith(PREFIXFILE.prefix[msg.guild.id]?.prefix || '-')) {
-			args[0] = args[0].substring(1);
+		if (msg.content.startsWith(PREFIXFILE.prefix[msg.guild.id]?.prefix || '-')) {
+			args[0] = args[0].substring(PREFIXFILE.prefix[msg.guild.id]?.prefix.length || 1);
 
 			if (TICKET.check(args)) {return TICKET.action(msg, args);}
 
@@ -225,6 +228,11 @@ client.on('messageCreate', async msg => {
 
 			if (MEMBERCOUNT.check(args)) {
 				return MEMBERCOUNT.action(msg, args, client,
+				);
+			}
+
+			if (CONFIGMETEO.check(args)) {
+				return CONFIGMETEO.action(msg, args, client,
 				);
 			}
 		}
